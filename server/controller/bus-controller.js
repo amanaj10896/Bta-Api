@@ -8,7 +8,9 @@ getBusData = (req, res) => {
         ddate: req.body.ddate
     }
 
-    busConfig.providerConfig(userRequest).then((Detail)=>{res.send({Detail});});
+    busConfig.providerConfig(userRequest).then((Detail)=>{
+        Detail = Detail[0].detail
+        res.send({Detail});});
     
     // res.send("Detail");
 
