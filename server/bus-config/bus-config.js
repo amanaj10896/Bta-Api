@@ -6,32 +6,41 @@ var {
 } = require('../db/mongoose');
 var provider = require('../provider/provider');
 
-var Details=[];
+var Details = [];
 
- providerConfig=async (userRequest)=> {
-    
+providerConfig = async (userRequest) => {
 
-    
-    
-     await BusAggregator.find().then((busAggregators) => {
-       busAggregators.forEach(busAggregator => {
-        aggregator = busAggregator.busAggName;
-        detail = provider.aggregator(userRequest,aggregator);
-        Details.push(detail)
-        
-        
-       });
-      
-   })
+
+
+
+    const busAggregators = await BusAggregator.find();
    
+    // busAggregators.forEach(async (busAggregator) => {
+   
+    //     aggregator =  busAggregator.busAggName;
+    //     const detail = await provider.aggregator(userRequest, aggregator, busAggregator);
+    //     // console.log(detail);
+    //     Details.push(detail);
 
-//    console.log(Details);
-   return(Details);
-    
+
+    // });
+   
+    for(i=0;i<busAggregators.length;i++){
+        aggregator = busAggregators[i].busAggName;
+        const detail = await provider.aggregator(userRequest, aggregator, busAggregators[i]);
+        Details.push(detail);
+    }
+
+
+
+
+    //    Details[0].then((e)=>{console.log(e)});
+    return (Details);
+
 }
 
 
-module.exports={
+module.exports = {
     providerConfig
-    
+
 }
